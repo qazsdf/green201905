@@ -1,0 +1,27 @@
+우선 팩맨과 nermy의 크기를 알아야해
+그래서 pacW를 css로부터 가져온다.(var pacW = $('pacman').css('width');) width가 얼마인지 알고싶어
+var pacW = $('pacman').css('width').substring(0,$('#pacman').css('width').length-2);
+eval로 pacW를 싸줘야
+문자열이 아닌 숫자로 계산을 할수가 있다.
+height도 똑같이
+
+그리고 pacMove() function에 pacW와 pacH를 50대신 추가해준다.
+
+전체크기를 알기 위해서 areaW,H를 만들고
+pacMove에서 확인 -> 800,400
+
+enermy의 크기에 따라 닿았는지를 알기위해서
+emeMove()에서 areaW,H를 인식하게 해준다.
+
+div의 수만큼 자동으로 enermy를 생성
+
+
+
+
+DOM(Document Object Model) : HTML에서 내부에 있는 tag들
+jquery
+자바스크립트 (DOM)에 대한 접근성을 강화시키는 것
+종류는 자바스크립트 라이브러리
+
+ajax
+비동기식 서버로부터 데이터를 로드

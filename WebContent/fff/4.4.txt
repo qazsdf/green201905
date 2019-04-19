@@ -1,0 +1,256 @@
+4.4 JSP
+
+c++은 obj파일로 만듬
+
+java는 jdk 바이트 코드로 변환
+
+서블릿
+자바를 사용하여 웹페이지를 동적으로 사용, 자바의 클래스, 자바확장자 사용, 동적 웹어플리케이션 일부
+웹 서버의 성능을 향상하기 위해 사용되는 자바 클래스의 일종
+
+서버로 요청 ->(WAS)서블릿 컨테이너로 던지면(라이프사이클)실행, 스레드처럼 동작
+
+스크립트는 내부코드가 다 보여 (클라이언트 언어라고불림)
+jsp는 코드를 까면 안보이지만 서버측에서 보면 보인다.
+개발을 할땐 scriptlet(servelet)으로 개발을 해야한다.
+내부코드가 안보인다 바이트 코드로 변환
+
+jsp로 만들어도 서블릿으로 치환해서 보낸다
+
+asp,php는 jsp처럼 작동. 서블릿을 쉽게 코딩을 할 수 있게 jsp를 만듬
+근데 단점은 jsp, servelet 둘다 알아야한다.
+
+
+jsp 개요
+servlet은 java source기반으로 작성
+컴파일 -> html
+
+
+jsp는 html기반으로 작성(web container)
+서블릿으로변환 서블릿이 컴파일 html
+jsp는 맴버변수와 매소드로 변환되는데 그 과정을 알아야한다.
+
+실행단계
+jspinit() 초기화 -> 
+jspService() 클라이언트 요청을 병행적으로 처리-> 
+jspDestroy()
+
+태그 
+크게 3개로 구분
+1.script -> 자바 코드를 그대로 사용
+1) 지시어(directive element) <%@directive -> 뭔가를 정의
+	page
+	include
+	taglib
+2) 스크립팅 원소(scripting element) -> 실행하는구문
+	선언(declaration)<%!... : jspinit과 관련 - 클래스 정의 (맴버변수, 매소드 정의)
+	실행구문을 넣을 수 없다
+
+	스크립트릿(scriptlet)<%... : jspservice와 관련(jspservice오버라이딩) - main()과 유사
+	지역변수
+
+	식(expression)<%=... : system.out.println()과 유사
+2.action -> java 코드를 빼고싶다. 논리식으로 많이 쓰임
+	표준 액션 태그<jsp:... :
+	include, forward, usebean
+3.el(Expression Language) -> (자료형이 없음)화면출력이 주 목적
+	jstl과 연동이 잘됨(script랑은 별로 안친해)
+	스크립트릿에서 작동하지 않아
+	연산자는 가지고 있지만 제어문(if, for)은 가지고있지않다.
+
+request-클라이언트가 웹서버에 요청할때 딸려들어오는 정보
+response-서버가 클라이언트에게 응답할때 Web Browser에보내는 응답 정보
+
+	response에 의해 행해지는 페이지 처리방식
+
+sendReDirect-이동명령, 페이지 이동(url갱신)
+include - url갱신없다 jsp안에 jsp포함, 페이지 내 페이지 삽입
+(directive tag와 action tag)
+action tag:완제품으로 나눠져있는것으로 작업해? 변수 String menu,main을 만들었어
+가져올땐 attribute로 가져옴, parameter는 null값도 나오고 위험성이 있음
+-해당 파일을 포함시킨 다음 컴파일
+include, forward, usebean
+
+directive tag: 에러가 나야 에러가 아니고, 에러가 안나야 에러야....
+-실행 시점에서 해당 파일 호출하여 각각 컴파일
+
+forward - url에 변하지않는(parameter,attribute를 사용할 수 있다) 페이지 이동(redirect가 아님)
+(scope(request) 내가 실행되고 있는 지역) 출력은 include로
+template는 중간에 넘기는 애야
+<jsp:forward> action tag
+
+attribute("문자열", 오브젝트)
+
+쿠키와 세션
+-HTTP프로토콜의 단점 때문에 -> url페이지마다 연계성이 없다.
+페이지를 이동할 때마다 새로운 정보 -> 사용자의 정보를 지속적으로 유지하기 위한 방법
+cookie("문자열","문자열")
+쿠키는 (서버가 클라이언트에 저장)
+쿠키는 클라이언트에 저장
+주정보
+세션도 쿠키를 쓴다.
+
+session: 서버 측의 컨테이너에서 관리되는 정보. 세션의 정보는 컨테이너에 접속해서 종료되기까지
+유지되며, 접속 시간에 제한을 두어 일정 시간 응답이 없다면 정보는 더 이상 유지되지 않게 설정 가능
+
+0ECC0AB92B05112188662CE7FDF5AC69
+9FA08079CFBA8484729EE0B160448561
+
+exception 에러페이지를 처리하는데 우선순위가 있다.
+1. page 내 try~ cactch
+2. page 디렉티브에서 지정한 errorPage
+3. web.xml에서 지정한 exception-type
+4. web.xml에서 지정한 error-code
+5. 웹 컨테이너가 제공하는 기본 에러 페이지
+
+
+application
+scope(web구동시)라고하면 
+
+파일업로드
+전송시(Client)
+1. form > input > type = "file"
+2. form > method = "post"
+3. form > enctype(encoding type) = "multipart/form-data"
+
+server가 받을때
+MultipartRequest(
+request
+saveDirectory
+maxPostSize
+encoding
+FileRenamePolicy policy)
+
+useBean
+
+el(expression language)
+JSTL과 연동(JSP Standard Tag Library)
+- ${출력 내용}
+스크립팅 표현<%=(Member)request.getAttribute("member").getAddress().GetZipcode()%>
+el표현${member.address.zipcode}
+action tag에서 include때문에 쓰고
+나머지는 el로 쓴다.
+el은 형변환이 필요없이 표현식 안에서 계산이 가능하다
+el은 변수를 만들수 없어 지금까지 scriptlet에서 만들어서 썼음
+자바에서 제공하는 jstl(java Standard library)를 써서 제어할 수 있다. 
+jstl은 기본으로 제공해주는 라이브러리가 아니야
+jstl.jar
+jstl은 변수를 만들수 있고, set, remove
+흐름:if, choose, foreach를 쓸 수 있다.
+page
+request
+response
+session
+application
+---------------------------------------------------
+out(jspWriter)
+config
+pageContext
+exception
+
+
+
+DB
+preparedStatement
+함수로 넣겠다
+보안에 강력하다 
+
+Statement vs PreparedStatement
+
+ * 
+
+항목               Statement                 PreparedStatement
+
+----------------------------------------------------------------------
+
+[소스코드 가독성]     + 연산자를 사용하여           in-parameter로 처리하기 때문에
+
+                  SQL문을 연결해서 만든다.       소스 코드가 간결하다.
+
+                  코드가 복잡하다.          
+
+----------------------------------------------------------------------                  
+
+[바이너리 데이터      SQL문과 데이터를             in-parameter로 처리하기 때문에   
+
+ 입력]             문자열로 표현하기 때문에        바이너리 데이터의 입력이 가능하다.
+
+                  파일과 같은 이진 데이터를
+
+                  저장할 수 없다.
+
+----------------------------------------------------------------------
+
+[실행 속도]         executeXXX()를 호출할 때마다     executeXXX()를 호출하기 전에  
+
+                  SQL문을 DBMS가 이해하는            SQL문을 미리 준비한다.
+
+                  형식으로 변환한 후 서버에 보낸다.    미리 DBMS에 전달하기 좋게 
+
+                  따라서 같은 SQL문을                    변환한다. 그런 후 데이터를 첨부하여
+
+                  반복문을 사용하여 반복할 때는        보낸다.
+
+                  실행 속도가 느리다.                      반복문과 같이 연속해서 동일한 
+
+                                                              SQL문을 실행할 때는 변환 작업이 
+
+                                                             없기 때문에 속도가 빠르다.
+
+dbcp - 셀렉트에만 의미가 있어
+dml,dcl
+
+transaction - dml중에 select, connection
+connection - (autocommit false or true)을 해주는 객체
+
+connection pol
+드라이버로드 커낵션확인 정보받고 받
+db는 반드시 서버를 통하여 정보전달
+
+커넥션풀은 샐랙트에만 영향을 미친다.
+
+웹서버에 커넥션풀을 걸어서 임대해서 쓴다....
+context.xml형식으로 쓰는것을 선호
+web.xml에서 server.xml
+이렇게 쓰면 드라이버 매니저를 직접적으로 건드리지않는다.
+서버가 꺼졌다 켜져도 커넥션은 유지상태
+
+커넥션풀과 프리페어스테이트먼트를 써서 해라
+
+java, tomcat setting 
+웹서버, 웹 어플리케이션 서버 구분할줄 알아야함
+웹서버 vs WAS 구분
+
+MVC = Model(모델) + View(뷰) + Controller (컨트롤러)
+프론트 컨트롤러 패턴이란, 
+하나의 핸들러 객체를 통해서 요청을 할당하고, 일관된 처리를 
+작성할 수 있게 하는 디자인 패턴이다.
+
+모델(MVC에서 M) 은 뷰 기술을 완전히 추상화 할 수 있도록 하는 Map 인터페이스 이다. 
+
+뷰(MVC에서 V) 는 사용자가 보는 화면.
+컨트롤러(MVC에서 C) 는 모델 Map 값을 준비하는 곳이자, 
+어떤 화면(view)에 어떤 모델값을 넣을지 선택하는 것을 담당
+
+index, detail...우리가 지금껏 해왔던 방식이 model1방식
+변경, 수정, 유지보수가 어려움
+개발자, 디자이너간 업무 효율이 떨어짐
+
+
+모델2
+정형화된 형식에 의해 구성
+기본 개발이 다소 복잡함
+변경, 수정, 유지보수가 쉬움
+개발자, 디자이너간의 업무 구분이 다소 분명하며 효율이 높음
+
+
+url -> tomcat -> web.xml(url에 어떠한 규칙을 가지고 있는 녀석들은 f_controller로 집입)
+f_controller(servlet)는 service로 진입시키는데 그때, action.java(interface)
+ActionForward excute() 추상메소드 (결과 클래스)
+service로 넘어오면 그때, db가 필요하면 db에 갔다오고
+그리고 다시 f_controller로 넘어와서 
+template로 넘어온다. 
+그리고 template에서 include해서 각 jsp를 가져옴
+
+
+(interface 엑션으로 실행)
